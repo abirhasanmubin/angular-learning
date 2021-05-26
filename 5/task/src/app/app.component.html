@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game On</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <app-game-control (intervalEvent)="onIntervalEvent($event)"></app-game-control>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="row">
+      <div class="col-md-6">
+        <app-odd *ngFor="let odd of oddNumbers" [oddNumber]="odd"></app-odd>
+      </div>
+      <div class="col-md-6">
+        <app-even *ngFor="let even of evenNumbers" [evenNumber]="even"></app-even>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
