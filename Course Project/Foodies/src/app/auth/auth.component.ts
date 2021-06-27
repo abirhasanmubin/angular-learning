@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable, throwError } from 'rxjs';
-import { AuthResponseData, AuthService } from '../services/auth.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {NgForm} from '@angular/forms';
+import {Router} from '@angular/router';
+import {Observable, throwError} from 'rxjs';
+import {AuthResponseData, AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -19,7 +19,8 @@ export class AuthComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }
@@ -42,19 +43,22 @@ export class AuthComponent implements OnInit {
 
     if (this.isLoginMode) {
       authObs = this.authService.login(email, password)
-    }
-    else {
+    } else {
       authObs = this.authService.signup(email, password)
     }
     authObs.subscribe(responseData => {
-      this.isLoading = false;
-      this.router.navigate(['/recipes']);
-    },
+        this.isLoading = false;
+        this.router.navigate(['/recipes']);
+      },
       errorMessage => {
         this.error = errorMessage;
         this.isLoading = false;
       })
     form.reset();
+  }
+
+  onHandleError() {
+    this.error = null;
   }
 
 }
