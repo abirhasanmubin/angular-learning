@@ -7,6 +7,9 @@ import {HeaderComponent} from './header/header.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
 import {SharedModule} from "./shared/shared.module";
+import { StoreModule } from '@ngrx/store';
+import * as fromApp from './store/app.reducer';
+
 
 @NgModule({
   declarations: [
@@ -18,6 +21,9 @@ import {SharedModule} from "./shared/shared.module";
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
+    StoreModule.forRoot(
+      fromApp.appReducer,
+      {}),
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}

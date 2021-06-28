@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Recipe } from '../recipes/recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
-import { ShoppingListService } from './shopping-list.service';
+import {Store} from "@ngrx/store";
+import * as ShoppingListActions from '../shopping-list/shopping-list-store/shopping-list.actions';
+import * as fromApp from '../store/app.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -10,34 +12,17 @@ import { ShoppingListService } from './shopping-list.service';
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
   private recipes: Recipe[] = [];
-  // private recipes: Recipe[] = [
-  //   new Recipe(
-  //     "Jhal Fry",
-  //     "Shei taste. Shei Jhal.",
-  //     "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-scotch-quails-eggs-5177019.jpg?quality=90&resize=960,872",
-  //     [
-  //       new Ingredient('Chicken', 1),
-  //       new Ingredient('Chilli', 5)
-  //     ]
-  //   ),
-  //   new Recipe(
-  //     "Beef Shatkora",
-  //     "Sylheter shera shad.",
-  //     "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-scotch-quails-eggs-5177019.jpg?quality=90&resize=960,872",
-  //     [
-  //       new Ingredient('Beef', 1),
-  //       new Ingredient('Shatkora', 1 / 2)
-  //     ]
-  //   ),
-  // ];
-  constructor(private slService: ShoppingListService) { }
+
+  constructor(
+    private store: Store<fromApp.AppState>
+  ) { }
 
   getRecipes() {
     return this.recipes.slice();
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
-    this.slService.addIngredients(ingredients)
+    this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients));
   }
 
   getRecipe(id: number) {
