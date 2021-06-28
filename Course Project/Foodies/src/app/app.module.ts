@@ -9,6 +9,8 @@ import {AuthInterceptorService} from "./auth/auth-interceptor.service";
 import {SharedModule} from "./shared/shared.module";
 import { StoreModule } from '@ngrx/store';
 import * as fromApp from './store/app.reducer';
+import {EffectsModule} from "@ngrx/effects";
+import {AuthEffects} from "./auth/auth-store/auth.effects";
 
 
 @NgModule({
@@ -21,9 +23,8 @@ import * as fromApp from './store/app.reducer';
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
-    StoreModule.forRoot(
-      fromApp.appReducer,
-      {}),
+    StoreModule.forRoot(fromApp.appReducer),
+    EffectsModule.forRoot([AuthEffects])
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
