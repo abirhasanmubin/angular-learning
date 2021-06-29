@@ -1,9 +1,6 @@
-import {HttpErrorResponse} from '@angular/common/http';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
-import {Router} from '@angular/router';
-import {Observable, Subscription, throwError} from 'rxjs';
-import {AuthResponseData, AuthService} from '../services/auth.service';
+import { Subscription } from 'rxjs';
 import {Store} from "@ngrx/store";
 import * as fromApp from '../store/app.reducer';
 import * as AuthActions from "./auth-store/auth.actions";
@@ -21,8 +18,6 @@ export class AuthComponent implements OnInit, OnDestroy {
   private storeSub: Subscription;
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
     private store: Store<fromApp.AppState>
   ) {}
 
