@@ -1,5 +1,5 @@
 import {HttpClient} from "@angular/common/http";
-import {Actions, createEffect, Effect, ofType} from "@ngrx/effects";
+import {Actions, createEffect, ofType} from "@ngrx/effects";
 import * as AuthActions from "./auth.actions";
 import {catchError, map, switchMap, tap} from "rxjs/operators";
 import {AuthResponseData, AuthService} from "../../services/auth.service";
@@ -21,7 +21,8 @@ const handleAuthentication = (
     email: email,
     userId: userId,
     token: token,
-    expirationDate: expirationDate
+    expirationDate: expirationDate,
+    redirect: true
   });
 }
 const handleError = (errorRes: any) => {
@@ -101,7 +102,7 @@ export class AuthEffects {
           returnSecureToken: true
         }).pipe(
           tap(resData => {
-            this.authService.setLogoutTimer(+resData.expiresIn)
+            this.authService.setLogoutTimer(+resData.expiresIn * 1000); // time convert to ms.
           }),
           map(resData => {
             return handleAuthentication(
@@ -122,8 +123,10 @@ export class AuthEffects {
   authRedirect = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthActions.AUTHENTICATE_SUCCESS),
-      tap(() => {
-        this.router.navigate(['/']);
+      tap((authSuccessAction: AuthActions.AuthenticateSuccess) => {
+        if(authSuccessAction.payload.redirect){
+          this.router.navigate(['/']);
+        }
       }));
   }, {dispatch: false});
 
@@ -158,13 +161,15 @@ export class AuthEffects {
           new Date(userData._tokenExpirationDate));
 
         if (loadedUser.token) {
-          const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+          const expirationDuration = new Date(userData._tokenExpirationDate).getTime()
+            - new Date().getTime(); // Already in ms.
           this.authService.setLogoutTimer(expirationDuration);
           return new AuthActions.AuthenticateSuccess({
             email: loadedUser.email,
             userId: loadedUser.id,
             token: loadedUser.token,
-            expirationDate: new Date(userData._tokenExpirationDate)
+            expirationDate: new Date(userData._tokenExpirationDate),
+            redirect: false
           });
         }
         return {type: 'DUMMY'};

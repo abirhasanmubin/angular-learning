@@ -10,7 +10,7 @@ import * as AuthActions from "./auth-store/auth.actions";
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent implements OnInit, OnDestroy {
+export class AuthComponent implements OnInit {
 
   isLoginMode: boolean = true;
   isLoading: boolean = false;
@@ -51,10 +51,5 @@ export class AuthComponent implements OnInit, OnDestroy {
   onHandleError() {
     this.store.dispatch(new AuthActions.ClearError());
   }
-
-  ngOnDestroy() {
-    this.storeSub.unsubscribe();
-  }
-
 }
 

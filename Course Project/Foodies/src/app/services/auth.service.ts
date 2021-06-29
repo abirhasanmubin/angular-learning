@@ -30,7 +30,7 @@ export class AuthService implements OnDestroy{
   setLogoutTimer(expirationDuration: number){
     this.tokenExpirationTimer = setTimeout(()=>{
       this.store.dispatch(new AuthActions.Logout());
-    }, expirationDuration * 1000);
+    }, expirationDuration);
   }
 
   clearLogoutTimer(){
