@@ -11,6 +11,8 @@ import { StoreModule } from '@ngrx/store';
 import * as fromApp from './store/app.reducer';
 import {EffectsModule} from "@ngrx/effects";
 import {AuthEffects} from "./auth/auth-store/auth.effects";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -24,7 +26,8 @@ import {AuthEffects} from "./auth/auth-store/auth.effects";
     AppRoutingModule,
     SharedModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([AuthEffects])
+    EffectsModule.forRoot([AuthEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}

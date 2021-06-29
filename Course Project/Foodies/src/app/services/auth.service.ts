@@ -1,5 +1,5 @@
 import {HttpClient} from "@angular/common/http";
-import {Injectable} from "@angular/core";
+import {Injectable, OnDestroy} from "@angular/core";
 import {Router} from "@angular/router";
 import {Store} from "@ngrx/store";
 
@@ -17,15 +17,9 @@ export interface AuthResponseData {
 }
 
 @Injectable({providedIn: 'root'})
-export class AuthService {
+export class AuthService implements OnDestroy{
 
   private tokenExpirationTimer: any;
-
-  signupUrl: string
-    = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCYroLcNUSv3PihR38oy6jk584qb3E8cMo';
-
-  signinUrl: string
-    = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCYroLcNUSv3PihR38oy6jk584qb3E8cMo';
 
   constructor(
     private http: HttpClient,
@@ -42,8 +36,12 @@ export class AuthService {
   clearLogoutTimer(){
     if(this.tokenExpirationTimer){
       clearTimeout(this.tokenExpirationTimer);
-      this.tokenExpirationTimer = null;
     }
+    this.tokenExpirationTimer = null;
+  }
+
+  ngOnDestroy() {
+    this.clearLogoutTimer();
   }
 
 }
