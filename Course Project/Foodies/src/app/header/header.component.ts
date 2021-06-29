@@ -16,7 +16,7 @@ import * as AuthActions from "../auth/auth-store/auth.actions";
 export class HeaderComponent implements OnInit, OnDestroy {
 
   isAuthenticated = false
-  private userSubscription: Subscription;
+  private storeSubscription: Subscription;
 
   constructor(
     private dataStorageService: DataStorageService,
@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.userSubscription = this.store.select('auth')
+    this.storeSubscription = this.store.select('auth')
       .pipe(map(authState => {
         return authState.user;
       }))
@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userSubscription.unsubscribe();
+    this.storeSubscription.unsubscribe();
   }
 
 }
